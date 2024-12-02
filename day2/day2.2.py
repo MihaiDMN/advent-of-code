@@ -32,7 +32,7 @@ def check_safety_error(report: list[int]) -> bool:
             if difference < 1 or difference > 3:
                 report = report[:i-1] + report[i:]
                 return check_safety(report)
-    
+
     elif report[1] == report[0]:
         report = report[1:]
         return check_safety(report)
