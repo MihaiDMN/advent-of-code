@@ -1,30 +1,42 @@
 
 def check_safety(report: list[int]) -> bool:
-    errors = 0
-    decreasing = None
     if report[1] < report[0]:
-        decreasing = True
+        for i in range(1, len(report)):
+            difference = report[i-1] - report[i]
+            if difference < 1 or difference > 3:
+                return False
+
     elif report[1] > report[0]:
-        decreasing = False
-    for i in range(1, len(report)):
-        if report[i] < report[i-1] and not decreasing:
-            if i >= 2:
-                if report[i] < report[i-2]:
-                    return False
-        elif report[i] > report[i-1] and decreasing:
-            if i >= 2:
-                if report[i] > report[i-2]:
-                    return False
-        elif report[i] < report[i-1]:
-            if report[i-1] - report[i] < 1 or report[i-1] - report[i] > 3:
+        for i in range(1, len(report)):
+            difference = report[i] - report[i-1]
+            if difference < 1 or difference > 3:
                 return False
-        elif report[i] > report[i-1]:
-            if report[i] - report[i-1] < 1 or report[i] - report[i - 1] > 3:
-                return False
-        elif report[i] == report[i-1]:
-            errors += 1
-    if errors > 1:
+
+    elif report[1] == report[0]:
         return False
+
+    return True
+
+
+def check_safety_error(report: list[int]) -> bool:
+    if report[1] < report[0]:
+        for i in range(1, len(report)):
+            difference = report[i-1] - report[i]
+            if difference < 1 or difference > 3:
+                report = report[:i-1] + report[i:]
+                return check_safety(report)
+
+    elif report[1] > report[0]:
+        for i in range(1, len(report)):
+            difference = report[i] - report[i-1]
+            if difference < 1 or difference > 3:
+                report = report[:i-1] + report[i:]
+                return check_safety(report)
+    
+    elif report[1] == report[0]:
+        report = report[1:]
+        return check_safety(report)
+
     return True
 
 
@@ -43,7 +55,7 @@ while line != '':
         break
 
 for report in reports:
-    if check_safety(report):
+    if check_safety_error(report):
         counter += 1
 
 print(counter)
