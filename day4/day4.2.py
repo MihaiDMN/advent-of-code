@@ -29,7 +29,7 @@ while line != '':
     text += line + '\n'
     line = input()
 # pip install numpy if you don't have it
-# I am manipulating the text to make it a numpy array to make it easiear to search for the pattern.
+# I am manipulating the text to make it a numpy array to make it easiear to search for the pattern
 grid = np.array([list(row) for row in text.strip().split('\n')])
 x, y = grid.shape
 total = 0
